@@ -1,0 +1,2 @@
+# ELIZA
+#My purpose is to vaguely reverse engineered the ELIZA chatbot. The point of the program is not to help solve the clients'problems #but to keep prolonging the conversation, keep the clients talking (Like an actual counsellor). It should best imitate an actual human # https://dl.acm.org/doi/10.1145/357980.357991#:~:text=Abstract,appearing%20in%20the%20input%20text #Weizenbaum, Joseph "ELIZA – A Computer Program For the Study of Natural Language Communication Between Man and Machine" #in: Communications of the ACM; Volume 9 , Issue 1 (January 1966): p 36-45
