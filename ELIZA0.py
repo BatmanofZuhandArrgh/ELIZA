@@ -9,32 +9,39 @@ class ELIZA:
     def __init__(self, ver):
         self.ver = ver
 
-    def initializeTheConvo():
-        i = np.randint()%3
+    def initializeTheConvo(self):
+        i = np.random.randint(0,2)
         if(i == 0):
-            print("Hi, I'm Eliza. How can I help you?")
+            print("ELIZA: Hi, I'm Eliza. How can I help you?")
         elif(i == 1):
-            print("Hello, I'm Eliza, and I will be your therapist today. Tell me something about yourself?")
+            print("ELIZA: Hello, I'm Eliza, and I will be your therapist today. Tell me something about yourself?")
         else:
-            print("Hello, I'm Eliza, and I'm here to help you however I can. What do you need my help with?")
+            print("ELIZA: Hello, I'm Eliza, and I'm here to help you however I can. What do you need my help with?")
 
     def endTheConvo(self):
-        if(self.clientsinput == "Bye"):
-            print("Thank you for your time. I hope this session is productive for you.")
+        print("ELIZA: Thank you for your time. I hope this session is productive for you.")
 
     def listen(self):
         self.clientsinput = input()
 
     def answer(self):
-        print("Fuck" + self.clientsinput)
+        print("ELIZA: Fuck " + self.clientsinput)
+
+    def run(self):
+        self.initializeTheConvo()
+        self.listen()
+        while(self.clientsinput!="Bye"):
+            self.answer()
+            self.listen()
+        self.endTheConvo()
 
 
 
 
-
+print("Instruction: ELIZA will be speaking to you soon. Please say bye to quit the session.")
        
-ELIZA1 = ELIZA(1)
-ELIZA1.listen()
+ELIZA1 = ELIZA(0)
+ELIZA1.run()
 
-print("Hello World")
-ELIZA1.answer()
+
+
