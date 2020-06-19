@@ -28,6 +28,8 @@ class ELIZA:
         self.negatives = ["shouldn't", "not", "never", "didn't", "doesn't",\
             "won't", "wasn't", "hasn't", "haven't", "aren't", "isn't"]
         self.asksPhrases = ["what", "when", "where", "why", "who", "whom","is", "does", "will", "was", "have", "has"]
+        self.delimiters = [',', '.', ';', ':',' ', '&', '?', '!']
+
     def initializeTheConvo(self): #Initializing the conversation. First, without the original user input
         i = np.random.randint(0,2)
         if(i == 0):
@@ -41,26 +43,32 @@ class ELIZA:
         print("ELIZA: Thank you for your time. I hope this session is productive for you.")
         print("ELIZA: I recommend that you drink more water and exercise more.")
 
-    def listen(self):   #INputing the answer from the user
+    def listen(self):   #Inputing the answer from the user
+        self.clientsinput = ""
         self.clientsinput = input()
 
     def tokenize(self):
         str = self.clientsinput
         index = -1
         for i in range(len(str)):
-            if(str[i] == " " or str[i] == "." or str[i] == ","):
+            if(str[i] in self.delimiters):
                 self.currentTokens.append(str[index+1:i].lower())
                 index = i
                 #Adding the word into the temp repository
-        self.currentTokens.append(str[index+1:i+1].lower()) #Adding the last word
-        #print("The currentTokens: ", self.currentTokens)
+         #else: 
+           # self.currentTokens.append(str.lower())
+            #If there is only one or zero characters in the sentences, add them in anyway
+        self.currentTokens.append(str[index+1:len(str)].lower()) #Adding the last word
+        print("Tokenize: The currentTokens: ", self.currentTokens)
         
     def basicStemming(self):
         for i in range(len(self.currentTokens)):
-            if(self.currentTokens[i][-1] == 's'):
-                self.currentTokens[i] = self.currentTokens[i][:-1]
-            if(self.currentTokens[i][-1] == '\''):
-                self.currentTokens[i] = self.currentTokens[i][:-1]
+            if (len(self.currentTokens[i]) != 0):
+                if(self.currentTokens[i][-1] == 's'):
+                    self.currentTokens[i] = self.currentTokens[i][:-1]
+            if (len(self.currentTokens[i]) != 0):
+                if(self.currentTokens[i][-1] == '\''):
+                    self.currentTokens[i] = self.currentTokens[i][:-1]
             if(self.currentTokens[i] == 'mom'):
                 self.currentTokens[i] = "mother"
             if(self.currentTokens[i] == 'dad'):
@@ -74,7 +82,7 @@ class ELIZA:
             if(self.currentTokens[i] == 'bro'):
                 self.currentTokens[i] = "brother"
             self.repository.append(self.currentTokens[i]) #Add the stemmed into the main repository
-            print("The currentTokens: ", self.currentTokens)
+        print("basicStemming: The currentTokens: ", self.currentTokens)
 
     def analyze(self):  #Encoding each path the conversation would take
         for i in range(len(self.currentTokens)):
@@ -89,11 +97,16 @@ class ELIZA:
             #If not, goes to random answer
             self.pathindex = 0
 
-        if(self.currentToken[0] in self.asksPhrases):
-            if("you" in self.currentTokens):
-                self.pathindex = 4 #When the user ask ELIZA about her
-            else:
-                self.pathindex = 5 #When the user ask a random question
+        if (len(self.currentTokens[i]) != 0):
+            if(self.currentTokens[0] in self.asksPhrases):
+                if("you" in self.currentTokens):
+                    self.pathindex = 4 #When the user ask ELIZA about her
+                else:
+                    self.pathindex = 5 #When the user ask a random question
+
+        for i in range(len(self.currentTokens)):
+            if(self.currentTokens[i] == "suicide" or self.currentTokens[i] == "suicide" or self.currentTokens[i] == "pain" or self.currentTokens[i] == "kill" or \
+                self.currentTokens[i] == "suicide" or self.currentTokens[i] == "suicide" or self.currentTokens[i] == "suicide" or self.currentTokens[i] == "suicide" or ):
 
         print("The path index is: ", self.pathindex)
 
@@ -106,6 +119,8 @@ class ELIZA:
         if(self.pathindex == 0):
         #random responses, works an answer with previous context
             print("That's interesting. Tell me")
+            print("By the way, please understand that I can't always give you an attuned response.\n\
+                    -- But, please go on.")
 
         elif(self.pathindex == 1):
             #random responses, works an answer with previous context
@@ -143,6 +158,17 @@ class ELIZA:
 
         self.currentTokens.clear()
 
+    def run(self):
+        self.initializeTheConvo()
+        self.listen()
+        while (self.clientsinput != "Bye" and self.clientsinput != "bye"):
+            self.tokenize()
+            self.basicStemming()
+            self.analyze()
+            self.answer()
+            self.listen()
+        self.endTheConvo()
+
 
         
 
@@ -150,6 +176,5 @@ print("Instruction: ELIZA will be speaking to you soon. Please say bye to quit t
        
 ELIZA1 = ELIZA(0)
 ELIZA1.run()
-
 
 
